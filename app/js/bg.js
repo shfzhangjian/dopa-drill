@@ -1,5 +1,5 @@
 // Full-screen WebGL backdrop: sunburst rays that grow into a rainbow tunnel of
-// Dopakichi silhouettes. Falls back to a CSS conic gradient without WebGL.
+// Dopakichi rabbit silhouettes. Falls back to a CSS conic gradient without WebGL.
 
 const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
 const FRAG = `precision highp float;
@@ -7,12 +7,14 @@ uniform vec2 uRes; uniform vec2 uCenter; uniform float uTime, uE, uKick, uFlash,
 vec3 hsv(float h, float s, float v){ vec3 k = clamp(abs(mod(h*6. + vec3(0.,4.,2.), 6.) - 3.) - 1., 0., 1.); return v * mix(vec3(1.), k, s); }
 float hash(vec2 c){ return fract(sin(dot(c, vec2(127.1, 311.7))) * 43758.5453); }
 mat2 rot(float a){ float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
-// Dopakichi head silhouette: a wide rounded head with large side ears.
+// Dopakichi head silhouette: a rounded rabbit head with long ears.
 float dopa(vec2 p){
   vec2 q = (p - vec2(0., -0.02)) / vec2(0.2, 0.15);
   float h = (length(q) - 1.) * 0.15;
-  float e1 = length(p - vec2(-0.26, 0.01)) - 0.11;
-  float e2 = length(p - vec2(0.26, 0.01)) - 0.11;
+  vec2 l = (p - vec2(-0.09, 0.23)) / vec2(0.055, 0.22);
+  vec2 r = (p - vec2(0.09, 0.23)) / vec2(0.055, 0.22);
+  float e1 = length(l) * 0.055 - 0.055;
+  float e2 = length(r) * 0.055 - 0.055;
   return min(h, min(e1, e2));
 }
 // Beat rings travelling outward (shared).
